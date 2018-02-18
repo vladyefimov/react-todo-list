@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React Todo App</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id="program"></div>
+    
+    <script type="text/babel">
+
+      class Task extends React.Component {
+        constructor(props) {
+          super(props);
+          this.edit = this.edit.bind(this);
+          this.save = this.save.bind(this);
+        }
+        
+
+        state = { edit: false }
+
+        edit() {
+          this.setState({ edit: true })
+        }
+
+        delete() {
+          alert( "Нажата кнопка удалить" );
+        }
+
+        save() {
+          var value = this.refs.newText.value;
+          alert(value);
+          this.setState({ edit: false })
+        }
+
+        renderNormal() {
+          return (
+            <div className="box">
+              <div className="text">{this.props.children}</div>
+              <button onClick={this.edit} className="btn light">Редактировать</button>
+              <button onClick={this.delete} className="btn red">Удалить</button>
+            </div>
+          );
+        }
+
+        renderEdit() {
+          return (
+            <div className="box">
+              <textarea ref="newText" defaultValue={this.props.children}></textarea>
+              <div className="text">{this.props.children}</div>
+              <button onClick={this.save} className="btn success">Сохранить</button>
+            </div>
+          );
+        }
+
+        render() {
+          if (this.state.edit) {
+            return this.renderEdit();
+          } else{
+            return this.renderNormal();
+          }
+        }
+      }
+      
+      class Field extends React.Component {
+
+        constructor(props) {
+          super(props);
+          //this.updateTask = this.updateTask.bind(this);
+          //this.deleteTask = this.deleteTask.bind(this);
+        }
+        
+        state = { tasks: [
+          'Task 1',
+          'Task 2',
+          'Task 3'
+          ]
+        }
+        
+        deleteTask(i) {
+          var arr = this.state.tasks;
+          arr.splice (i, 1);
+          this.setState({ tasks: arr });
+        }
+
+        updateTask(text, i) {
+          var arr = this.state.tasks;
+          arr[i] = text;
+          this.setState({ tasks: arr });
+        }
+
+        eachTask(item, i) {
+          return (
+            <Task key={i} index={i} updateTask={this.updateTask}>
+              {item}
+            </Task>
+          )
+        }
+
+        render() {
+          return (
+            <div className="field">
+              {this.state.tasks.map (this.eachTask)}
+            </div>
+          )
+        } 
+      }
+
+      const app = document.getElementById("program");
+
+      ReactDOM.render(<Field />,app);
+
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      To set up a production-ready React build environment, follow these instructions:
+      * https://reactjs.org/docs/add-react-to-a-new-app.html
+      * https://reactjs.org/docs/add-react-to-an-existing-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      * https://reactjs.org/docs/react-without-jsx.html
+      * https://reactjs.org/docs/cdn-links.html
+    -->
+  </body>
+</html>

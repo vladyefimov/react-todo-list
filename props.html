@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id="example"></div>
+    
+    <script type="text/babel">
+
+      class Block2 extends React.Component {
+        render() {
+          return (
+            <div>
+              <h3>{this.props.title}</h3>
+              <p>{this.props.desc}</p>
+            </div>
+          );
+        }
+      }
+      
+      const app = document.getElementById("example");
+      // var Block = React.createClass ({
+      //   render: function () {
+      //     return (<h3>Site</h3>);
+      //   }
+      // });
+
+      ReactDOM.render(
+        <div>
+          <Block2 title="Title1" desc="Desc1" />
+          <Block2 title="Title2" desc="Desc2" />
+          <Block2 title="Title3" desc="Desc3" />
+        </div>,
+        app
+      );
+
+    </script>
+
+    <!-- <script type="text/babel">
+
+      ReactDOM.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('root')
+      );
+
+    </script> -->
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      To set up a production-ready React build environment, follow these instructions:
+      * https://reactjs.org/docs/add-react-to-a-new-app.html
+      * https://reactjs.org/docs/add-react-to-an-existing-app.html
+
+      You can also use React without JSX, in which case you can remove Babel:
+      * https://reactjs.org/docs/react-without-jsx.html
+      * https://reactjs.org/docs/cdn-links.html
+    -->
+  </body>
+</html>
