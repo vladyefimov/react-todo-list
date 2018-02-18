@@ -19,6 +19,7 @@
           super(props);
           this.edit = this.edit.bind(this);
           this.save = this.save.bind(this);
+          this.delete = this.delete.bind(this);
         }
         
 
@@ -29,12 +30,12 @@
         }
 
         delete() {
-          alert( "Нажата кнопка удалить" );
+          this.props.deleteTask(this.props.index);
         }
 
         save() {
-          var value = this.refs.newText.value;
-          alert(value);
+          this.props.updateTask(this.refs.newText.value, this.props.index);
+          console.log(this.refs.newText.value);
           this.setState({ edit: false })
         }
 
@@ -53,7 +54,7 @@
             <div className="box">
               <textarea ref="newText" defaultValue={this.props.children}></textarea>
               <div className="text">{this.props.children}</div>
-              <button onClick={this.save} className="btn success">Сохранить</button>
+              <button onClick={this.save} className="btn light">Сохранить</button>
             </div>
           );
         }
@@ -72,8 +73,8 @@
         constructor(props) {
           super(props);
           this.updateTask = this.updateTask.bind(this);
+          this.deleteTask = this.deleteTask.bind(this);
           this.eachTask = this.eachTask.bind(this);
-          //this.deleteTask = this.deleteTask.bind(this);
         }
         
         state = { tasks: [
@@ -92,12 +93,13 @@
         updateTask(text, i) {
           var arr = this.state.tasks;
           arr[i] = text;
+          console.log(arr[i]);
           this.setState({ tasks: arr });
         }
 
         eachTask(item, i) {
           return (
-            <Task key={i} index={i} updateTask={this.updateTask}>
+            <Task key={i} index={i} updateTask={this.updateTask} deleteTask={this.deleteTask}>
               {item}
             </Task>
           )
