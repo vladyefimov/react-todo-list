@@ -26,7 +26,7 @@
         state = { edit: false }
 
         edit() {
-          this.setState({ edit: true })
+          this.setState({ edit: true });
         }
 
         delete() {
@@ -36,7 +36,7 @@
         save() {
           this.props.updateTask(this.refs.newText.value, this.props.index);
           console.log(this.refs.newText.value);
-          this.setState({ edit: false })
+          this.setState({ edit: false });
         }
 
         renderNormal() {
@@ -73,20 +73,22 @@
         constructor(props) {
           super(props);
           this.updateTask = this.updateTask.bind(this);
+          this.addTask = this.addTask.bind(this);
           this.deleteTask = this.deleteTask.bind(this);
           this.eachTask = this.eachTask.bind(this);
         }
         
-        state = { tasks: [
-          'Task 1',
-          'Task 2',
-          'Task 3'
-          ]
-        }
+        state = { tasks: [] }
         
+        addTask(text) {
+          var arr = this.state.tasks;
+          arr.push(text);
+          this.setState({ tasks: arr });
+        }
+
         deleteTask(i) {
           var arr = this.state.tasks;
-          arr.splice (i, 1);
+          arr.splice(i, 1);
           this.setState({ tasks: arr });
         }
 
@@ -108,6 +110,7 @@
         render() {
           return (
             <div className="field">
+              <button onClick={this.addTask.bind(null,"Новое задание")} className="btn light">Новое задание</button>
               {this.state.tasks.map (this.eachTask)}
             </div>
           )
