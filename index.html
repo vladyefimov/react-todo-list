@@ -78,11 +78,26 @@
         }
         
         state = { tasks: [] }
+
+        //getting from localStorage
+        componentWillMount () {
+          if (localStorage['tasks']) {
+            localStorage.getItem('tasks') && this.setState({
+                tasks: JSON.parse(localStorage.getItem('tasks'))
+            });
+          }
+        }
+
+        //saving to localStorage
+        componentWillUpdate (nextProps, nextState) {
+            localStorage.setItem('tasks', JSON.stringify(nextState.tasks));
+        }
         
-        addTask(text) {
+        addTask() {
           var arr = this.state.tasks;
-          arr.push(text);
+          arr.push(this.refs.addText.value);
           this.setState({ tasks: arr });
+          this.refs.addText.value = "";
         }
 
         deleteTask(i) {
@@ -108,7 +123,8 @@
         render() {
           return (
             <div className="field">
-              <button onClick={this.addTask.bind(null,"Новое задание")} className="btn light">Новое задание</button>
+              <textarea ref="addText"></textarea>
+              <button onClick={this.addTask} className="btn light">Новое задание</button>
               {this.state.tasks.map (this.eachTask)}
             </div>
           )
