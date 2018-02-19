@@ -35,7 +35,6 @@
 
         save() {
           this.props.updateTask(this.refs.newText.value, this.props.index);
-          console.log(this.refs.newText.value);
           this.setState({ edit: false });
         }
 
@@ -95,7 +94,6 @@
         updateTask(text, i) {
           var arr = this.state.tasks;
           arr[i] = text;
-          console.log(arr[i]);
           this.setState({ tasks: arr });
         }
 
