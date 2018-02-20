@@ -75,6 +75,7 @@
           this.addTask = this.addTask.bind(this);
           this.deleteTask = this.deleteTask.bind(this);
           this.eachTask = this.eachTask.bind(this);
+          this.findTask = this.findTask.bind(this);
         }
         
         state = { tasks: [] }
@@ -92,10 +93,18 @@
         componentWillUpdate (nextProps, nextState) {
             localStorage.setItem('tasks', JSON.stringify(nextState.tasks));
         }
+
+        findTask(arr, findText) {
+          var findText = this.refs.findText.value;
+          //if (arr.state.indexOf) {
+          //  return arr.indexOf(findText);
+          //}
+          console.log(arr.state.indexOf(findText));
+        }
         
         addTask() {
           var arr = this.state.tasks;
-          arr.push(this.refs.addText.value);
+          arr.unshift(this.refs.addText.value);
           this.setState({ tasks: arr });
           this.refs.addText.value = "";
         }
@@ -123,6 +132,8 @@
         render() {
           return (
             <div className="field">
+              <textarea ref="findText"></textarea>
+              <button onClick={this.findTask} className="btn light">Поиск</button>
               <textarea ref="addText"></textarea>
               <button onClick={this.addTask} className="btn light">Новое задание</button>
               {this.state.tasks.map (this.eachTask)}
