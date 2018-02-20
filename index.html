@@ -21,7 +21,6 @@
           this.save = this.save.bind(this);
           this.delete = this.delete.bind(this);
         }
-        
 
         state = { edit: false }
 
@@ -61,7 +60,7 @@
         render() {
           if (this.state.edit) {
             return this.renderEdit();
-          } else{
+          } else {
             return this.renderNormal();
           }
         }
@@ -78,7 +77,7 @@
           this.findTask = this.findTask.bind(this);
         }
         
-        state = { tasks: [] }
+        state = { tasks: [], tasksFind: [], find: false }
 
         //getting from localStorage
         componentWillMount () {
@@ -93,15 +92,20 @@
         componentWillUpdate (nextProps, nextState) {
             localStorage.setItem('tasks', JSON.stringify(nextState.tasks));
         }
-
-        findTask(arr, findText) {
-          var findText = this.refs.findText.value;
-          //if (arr.state.indexOf) {
-          //  return arr.indexOf(findText);
-          //}
-          console.log(arr.state.indexOf(findText));
-        }
         
+        findTask(arr, findText) {
+          this.setState({ find: true });
+          this.state.tasksFind = [];
+          var arr = this.state.tasks;
+          var arrFind = this.state.tasksFind;
+          var findText = this.refs.findText.value;
+          for (var i = 0; i < arr.length; i++) {
+            if (arr[i].indexOf(findText) >= 0) {
+              arrFind.push(arr[i]);
+            }
+          }
+        }
+
         addTask() {
           var arr = this.state.tasks;
           arr.unshift(this.refs.addText.value);
@@ -110,15 +114,32 @@
         }
 
         deleteTask(i) {
-          var arr = this.state.tasks;
-          arr.splice(i, 1);
-          this.setState({ tasks: arr });
+          if (!this.state.find) {
+            var arr = this.state.tasks;
+            arr.splice(i, 1);
+            this.setState({ tasks: arr });
+          } else {
+            var arr = this.state.tasks;
+            var arrFind = this.state.tasksFind;
+            arr.splice(i, 1);
+            arrFind.splice(i, 1);
+            this.setState({ tasks: arr });
+            this.setState({ tasksFind: arrFind });
+          }
         }
 
         updateTask(text, i) {
-          var arr = this.state.tasks;
-          arr[i] = text;
-          this.setState({ tasks: arr });
+          if (!this.state.find) {
+            var arr = this.state.tasks;
+            arr[i] = text;
+            this.setState({ tasks: arr });
+          } else {
+            var arr = this.state.tasks;
+            var arrFind = this.state.tasksFind;
+            arrFind[i] = arr[i] = text;
+            this.setState({ tasks: arr });
+            this.setState({ tasksFind: arrFind });
+          }
         }
 
         eachTask(item, i) {
@@ -130,15 +151,27 @@
         }
 
         render() {
-          return (
-            <div className="field">
-              <textarea ref="findText"></textarea>
-              <button onClick={this.findTask} className="btn light">Поиск</button>
-              <textarea ref="addText"></textarea>
-              <button onClick={this.addTask} className="btn light">Новое задание</button>
-              {this.state.tasks.map (this.eachTask)}
-            </div>
-          )
+          if (!this.state.find) {
+            return (
+              <div className="field">
+                <textarea ref="findText"></textarea>
+                <button onClick={this.findTask} className="btn light">Поиск</button>
+                <textarea ref="addText"></textarea>
+                <button onClick={this.addTask} className="btn light">Новое задание</button>
+                {this.state.tasks.map (this.eachTask)}
+              </div>
+            )
+          } else {
+            return (
+              <div className="field">
+                <textarea ref="findText"></textarea>
+                <button onClick={this.findTask} className="btn light">Поиск</button>
+                <textarea ref="addText"></textarea>
+                <button onClick={this.addTask} className="btn light">Новое задание</button>
+                {this.state.tasksFind.map (this.eachTask)}
+              </div>
+            )
+          }
         } 
       }
 
