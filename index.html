@@ -50,7 +50,7 @@
         renderEdit() {
           return (
             <div className="box">
-              <textarea ref="newText" defaultValue={this.props.children}></textarea>
+              <input ref="newText" defaultValue={this.props.children}></input>
               <div className="text">{this.props.children}</div>
               <button onClick={this.save} className="btn light">Сохранить</button>
             </div>
@@ -75,6 +75,7 @@
           this.deleteTask = this.deleteTask.bind(this);
           this.eachTask = this.eachTask.bind(this);
           this.findTask = this.findTask.bind(this);
+          this.alr = this.alr.bind(this);
         }
         
         state = { tasks: [], tasksFind: [], find: false }
@@ -94,16 +95,20 @@
         }
         
         findTask(arr, findText) {
+          var findText = this.refs.findText.value;
           this.setState({ find: true });
           this.state.tasksFind = [];
           var arr = this.state.tasks;
           var arrFind = this.state.tasksFind;
-          var findText = this.refs.findText.value;
           for (var i = 0; i < arr.length; i++) {
-            if (arr[i].indexOf(findText) >= 0) {
+            if (arr[i].toLowerCase().indexOf(findText.toLowerCase()) >= 0) {
               arrFind.push(arr[i]);
             }
           }
+        }
+
+        alr() {
+          console.log(this.refs.findText.value);
         }
 
         addTask() {
@@ -136,9 +141,11 @@
           } else {
             var arr = this.state.tasks;
             var arrFind = this.state.tasksFind;
+            console.log(i);
             arrFind[i] = arr[i] = text;
             this.setState({ tasks: arr });
             this.setState({ tasksFind: arrFind });
+            console.log(i);
           }
         }
 
@@ -154,9 +161,9 @@
           if (!this.state.find) {
             return (
               <div className="field">
-                <textarea ref="findText"></textarea>
-                <button onClick={this.findTask} className="btn light">Поиск</button>
-                <textarea ref="addText"></textarea>
+                <input onKeyUp={this.findTask} ref="findText"></input>
+                <button className="btn light">Поиск</button>
+                <input ref="addText"></input>
                 <button onClick={this.addTask} className="btn light">Новое задание</button>
                 {this.state.tasks.map (this.eachTask)}
               </div>
@@ -164,9 +171,9 @@
           } else {
             return (
               <div className="field">
-                <textarea ref="findText"></textarea>
+                <input onKeyUp={this.findTask} ref="findText"></input>
                 <button onClick={this.findTask} className="btn light">Поиск</button>
-                <textarea ref="addText"></textarea>
+                <input ref="addText"></input>
                 <button onClick={this.addTask} className="btn light">Новое задание</button>
                 {this.state.tasksFind.map (this.eachTask)}
               </div>
