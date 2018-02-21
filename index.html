@@ -75,7 +75,6 @@
           this.deleteTask = this.deleteTask.bind(this);
           this.eachTask = this.eachTask.bind(this);
           this.findTask = this.findTask.bind(this);
-          this.alr = this.alr.bind(this);
         }
         
         state = { tasks: [], tasksFind: [], find: false }
@@ -105,10 +104,6 @@
               arrFind.push(arr[i]);
             }
           }
-        }
-
-        alr() {
-          console.log(this.refs.findText.value);
         }
 
         addTask() {
@@ -141,11 +136,9 @@
           } else {
             var arr = this.state.tasks;
             var arrFind = this.state.tasksFind;
-            console.log(i);
             arrFind[i] = arr[i] = text;
             this.setState({ tasks: arr });
             this.setState({ tasksFind: arrFind });
-            console.log(i);
           }
         }
 
